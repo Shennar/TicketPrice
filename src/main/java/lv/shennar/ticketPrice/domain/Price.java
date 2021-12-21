@@ -1,10 +1,21 @@
 package lv.shennar.ticketPrice.domain;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 public class Price {
 
+    private UUID passengerId;
     private BigDecimal basePrice;
+
+    public UUID getPassengerId() {
+        return passengerId;
+    }
+
+    public void setPassengerId(UUID passengerId) {
+        this.passengerId = passengerId;
+    }
+
     private BigDecimal luggagePrice;
 
     public BigDecimal getBasePrice() {
@@ -23,7 +34,8 @@ public class Price {
         this.luggagePrice = luggagePrice;
     }
 
-    public Price(BigDecimal basePrice, BigDecimal luggagePrice) {
+    public Price(UUID passengerId, BigDecimal basePrice, BigDecimal luggagePrice) {
+        this.passengerId = passengerId;
         this.basePrice = basePrice;
         this.luggagePrice = luggagePrice;
     }

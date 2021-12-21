@@ -8,6 +8,7 @@ import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.SQLOutput;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -24,6 +25,14 @@ public class PriceServiceImpl implements PriceService {
                                        final BigDecimal basePrice,
                                        final BigDecimal vatTaxRateAsDecimal) {
 
+        if (basePrice == null){
+            System.out.println("Something went wrong with getting a base price. Unable to calculate price.");
+            return null;
+        }
+        if (vatTaxRateAsDecimal == null){
+            System.out.println("Something went wrong with getting a VAT tax rate. Unable to calculate price.");
+            return null;
+        }
         BigDecimal vatTaxMultiplier = BigDecimal.ONE.add(vatTaxRateAsDecimal);
         List<Price> priceComponents = passengers.stream().map(passenger -> {
             long itemCount = luggage.stream()
@@ -45,6 +54,6 @@ public class PriceServiceImpl implements PriceService {
                 .multiply(vatTaxMultiplier).setScale(2);
         BigDecimal luggagePrice = basePrice.multiply(BigDecimal.valueOf(luggageItemCount)).multiply(new BigDecimal(RATE_FOR_LUGGAGE))
                 .multiply(vatTaxMultiplier).setScale(2);
-        return new Price(farePriceForPassenger, luggagePrice);
+        return new Price(passenger.getId(), farePriceForPassenger, luggagePrice);
     }
 }

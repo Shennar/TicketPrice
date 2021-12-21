@@ -12,9 +12,9 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation group: 'joda-time', name: 'joda-time', version: '2.10.13'
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.20'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.2.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'

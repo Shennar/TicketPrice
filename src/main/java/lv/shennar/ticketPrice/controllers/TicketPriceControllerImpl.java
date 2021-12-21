@@ -6,8 +6,6 @@ import lv.shennar.ticketPrice.domain.Ticket;
 import lv.shennar.ticketPrice.services.PriceService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,7 +17,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping({"${hostname}"})
+@RequestMapping( "/")
 public class TicketPriceControllerImpl implements TicketPriceController {
 
     private final PriceService priceService;
@@ -39,7 +37,7 @@ public class TicketPriceControllerImpl implements TicketPriceController {
                              final List<Passenger> passengers,
                              final List<LuggageItem> allLuggage) {
 
-        BigDecimal basePrice = null;
+        BigDecimal basePrice;
         try {
             basePrice = externalServiceController.getBasePrice(destination);
         } catch (URISyntaxException e) {
@@ -47,7 +45,7 @@ public class TicketPriceControllerImpl implements TicketPriceController {
             return null;
         }
 
-        BigDecimal vatTaxRateAsDecimal = null;
+        BigDecimal vatTaxRateAsDecimal;
         try {
             vatTaxRateAsDecimal = externalServiceController.getVatTaxRateForDate(purchaseDate).divide(new BigDecimal("100"), RoundingMode.HALF_UP);
         } catch (URISyntaxException e) {
