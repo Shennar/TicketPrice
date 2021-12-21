@@ -1,0 +1,32 @@
+The project is a Spring boot project with Gradle as a build tool.
+The structure of the project is the following.
+1. The Domain consists of 4 classes:
+  1) Ticket - a class containing total ticket price and a list with prices for each passenger.
+  2) Passenger - a class representing a passenger who needs a ticket; includes a field representing age status: adult or not.
+  3) LuggageItem - a classe representing an item of luggage; has a mark who owns this item.
+  4) Price - a class containing fare price and luggage price for a passenger; has a mark for whom these prices are calculated.
+2. The Controllers
+  1) Interface TicketPriceController and its implementation TicketPriceControllerImpl - the main REST controller which gives an access to Ticket price calculation.
+      As the application - in theory - could provide the service for different companies with different price calculation methods but the similar interface, each ticket 
+      calculation controller should implement this interface.
+  2) ExternalServiceController provides methods for getting a base price and the VAT tax from an external system. In fact here also could be an interface, but I was a little
+     bit lazy in this case. :)
+3. The Service
+  Only one service present in this application - an interface PriceService and its implementation PriceServiceImpl. As the price calculation methods 
+  could be different each such service should implement this interface.
+  
+The functionality of the application works as following:
+1. A request for ticket price with destination, date, list of passengers and list of their luggage is sent to REST Controller TicketPriceController.
+2. The TicketPriceController makes calls to EternalSustemController and gets base price and tax rate.
+3. After that list of passengers and list of luggage is passed to the PriceService along with base price and tax rate as decimal number.
+4. In the PriceService the price is calculated for each passenger taking into account its luggage (by passenger id). These prices are added to the Ticket as price components
+  and the total ticket price is calculated.
+5. The resulting object Ticket is returned to requester.
+
+Possible improvements.
+1. I wanted to use Lombok to avoid boilerplate code, but it did not worked.
+2. For some strange reason annotation @Value did not inject values from application.properties file to a fields.
+3. Some validation annotations could be added to method arguments in TicketPriceService, but having problems with another annotations i decided to leave all as is - 
+  at least working. :)
+4. Had no idea how to handle exceptions thrown from ExternalSysytemController. Somehow do this.
+5. REST Assured test could be added for TicketPriceService.
